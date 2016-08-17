@@ -5,8 +5,11 @@ var argv 	= require('argv');
 var osc 	= require('node-osc');
 
 var content = '[' + getDateTime() + ']';
-
 var params = argv.run().targets;
+
+// settings
+var ADDRESS = '127.0.0.1';
+var PORT    = 1234;
 
 // logging
 params.forEach(function(param) {
@@ -19,7 +22,7 @@ var command = params[3];
 var frame = parseInt(params[4]);
 
 
-var client = new osc.Client('127.0.0.1', 1234);
+var client = new osc.Client(ADDRESS, PORT);
 client.send('/dragonframe/' + command.toLowerCase(), frame, function() {
 	client.kill();
 });
