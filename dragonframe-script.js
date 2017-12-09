@@ -2,6 +2,7 @@
 
 var fs 		= require('fs');
 var argv 	= require('argv');
+var path  = require('path');
 var osc 	= require('node-osc');
 
 var content = '[' + getDateTime() + ']';
@@ -20,10 +21,19 @@ params.forEach(function(param) {
 // parse
 var command = params[3];
 var frame = parseInt(params[4]);
+var sceneName = `${params[0]}_${params[1]}_${params[2]}`
 
+var args = [frame, sceneName]
+
+// save
+if (command === "CC") {
+  var filePath = params[7];
+  args.push(filePath);
+
+}
 
 var client = new osc.Client(ADDRESS, PORT);
-client.send('/dragonframe/' + command.toLowerCase(), frame, function() {
+client.send('/dragonframe/' + command.toLowerCase(), args, function() {
 	client.kill();
 });
 
